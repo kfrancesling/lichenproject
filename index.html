@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <title>Lichen Map</title>
+      <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+      crossorigin=""/>
+      <link rel = "stylesheet" href = "styles.css"/>
+      <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+      <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+      integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+      crossorigin=""></script>
+      <link href="lightbox/dist/css/lightbox.css" rel="stylesheet" />
+      <script src="lightbox/dist/js/lightbox-plus-jquery.js"></script>
+      <script src="https://unpkg.com/leaflet@latest/dist/leaflet.js"></script>
+      <script src="https://unpkg.com/leaflet-providers@latest/leaflet-providers.js"></script>
+      <script src="https://unpkg.com/esri-leaflet@2.0.6"></script>
+      <script src="https://unpkg.com/esri-leaflet-vector@4.2.3/dist/esri-leaflet-vector.js" crossorigin=""></script>
+      <script src="img/Caloplaca_verruculifera_lichen_card_LR_010_24_08_24.jpg"></script>
+      <script src="img/Caloplaca_marina_lichen_card_LR_010_24_08_24.jpg"></script>
+      <script src="img/Xanthoria_parietina__lichen_card_LR_010_24_08_24.jpg"></script>
+      <script src="img/Myriolecis_actophila_helicopsis_lichen_card_LR_010_24_08_24.jpg"></script>
+      <script src="img/Ramalina_siliquosa _lichen_card_LR_010_24_08_24.jpg"></script>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+   </head>
+
+   <body>
+      <div id = "map" style = "width: 100%; height: 100vh"></div>
+      
+      <div id="modal">
+         <div class="modalconent">
+              <h1></h1>
+     
+             <p>Use this map to explore the unique community of maritime lichen of Granton Eastern Breakwater as you walk. Be careful of the edge and of slippery stones, do not walk in high winds.
+              <br>
+              <br>
+               Click on the <img class="inlineimg" src="icons/starpurple.png"> for unique lichen species cards detailing environmental resistance, ID, habitat, power/key identifiers, and species colour range. Click on these to enlarge
+               <br>
+               Click on the <img class="inlineimg" src="icons/staryellow.png">  for lichen ecology and biology 
+               <br>
+               <br>
+               <br>
+               Map illustration Sam Della-Valle
+               <br>
+               Card design Finn Rabbitt Dove
+               <br>
+               Website Frances Lingard
+               <br>
+               Produced by Toby Mills with Rosy Naylor 
+               <br>
+               Funded by Art Walk Porty and the British Lichen Society 
+               <br>
+               <br>
+               <a href=" https://www.artwalkporty.co.uk/project/granton-eastern-breakwater-lichen-project/" target="_blank">About the project</a>
+               <br>
+               <br>
+             <button id="button">Close</button>
+         </div>
+     </div>
+
+
+
+      <script>
+         
+         window.onload = function () {
+    document.getElementById('button').onclick = function () {
+        document.getElementById('modal').style.display = "none"
+    };
+};
+         var map = L.map('map').setView([55.9839, -3.2195], 16);
+
+         var southWest = L.latLng(55.978608, -3.236332),
+                northEast = L.latLng(55.989165, -3.203244),
+                mybounds = L.latLngBounds(southWest, northEast);
+           // map.setMaxBounds(mybounds);
+   //     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  //  maxZoom: 20,
+  //  attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+//}).addTo(map);
+        
+         
+      
+         var mapOverlay = "img/lichenmapc.jpg",
+    imageBounds = [[55.987837, -3.224126], [55.979493, -3.214514]];
+L.imageOverlay(mapOverlay, imageBounds).addTo(map);
+
+
+var popup = L.popup();
+
+
+const createMarker = ( iconUrl, lat, long, lightBoxhref, imgRef, imgName ) => {
+   var icon = L.icon({
+    iconUrl,
+    iconSize:     [30, 30], // size of the icon
+    iconAnchor: [10,10],
+    keepInView: true,
+    className: 'animated-icon my-icon-id' 
+    });
+var marker = L.marker([lat, long], {icon}).addTo(map);
+marker.bindPopup(`<a href='${lightBoxhref}' data-lightbox='image-1' data-title='${imgName}'> <img src='${imgRef}' width="250" height="360"></a>`,{className: 'cards'})
+}
+
+//var popup = L.popup();
+
+//function onMapClick(e) {
+   // popup
+    //    .setLatLng(e.latlng)
+    //    .setContent("You clicked the map at " + e.latlng.toString())
+     //   .openOn(map);
+//}
+
+//map.on('click', onMapClick);
+
+
+createMarker (
+   'icons/starpurple.png',
+   55.981872, 
+   -3.218589,
+   'lightbox/dist/images/Caloplaca_marina_lichen_card_LR_010_24_08_24.jpg',
+   'lightbox/dist/images/Caloplaca_marina_lichen_card_LR_010_24_08_24.jpg',
+   'Caloplaca marina'
+)
+
+createMarker (
+   'icons/starpurple.png',
+   55.982597, 
+   -3.217955,
+   'lightbox/dist/images/Caloplaca_verruculifera_lichen_card_LR_010_24_08_24.jpg',
+   'lightbox/dist/images/Caloplaca_verruculifera_lichen_card_LR_010_24_08_24.jpg',
+   'Xanthoria parietina'
+)
+
+createMarker (
+   'icons/starpurple.png',
+   55.983678, 
+   -3.218244,
+   'lightbox/dist/images/Xanthoria_parietina__lichen_card_LR_010_24_08_24.jpg',
+   'lightbox/dist/images/Xanthoria_parietina__lichen_card_LR_010_24_08_24.jpg',
+   'Xanthoria Parietina'
+)
+
+createMarker (
+   'icons/starpurple.png',
+   55.985202, 
+   -3.218212,
+   'lightbox/dist/images/Myriolecis_actophila_helicopsis_lichen_card_LR_010_24_08_24.jpg',
+   'lightbox/dist/images/Myriolecis_actophila_helicopsis_lichen_card_LR_010_24_08_24.jpg',
+   'Myriolecis actophila helicopsis'
+)
+
+createMarker (
+   'icons/starpurple.png',
+   55.986438, 
+   -3.2198,
+   'lightbox/dist/images/Ramalina_siliquosa _lichen_card_LR_010_24_08_24.jpg',
+   'lightbox/dist/images/Ramalina_siliquosa _lichen_card_LR_010_24_08_24.jpg',
+   'Ramalina siliquousa'
+)
+
+const createMarker2 = ( iconUrl, lat, long, popUpText ) => {
+   var icon = L.icon({
+    iconUrl,
+    iconSize:     [30, 30], // size of the icon
+    iconAnchor: [10,10],
+    keepInView: true
+    });
+var marker2 = L.marker([lat, long], {icon}).addTo(map);
+marker2.bindPopup(`${popUpText}`, )
+}
+
+createMarker2 (
+   'icons/staryellow.png',
+   55.982223, 
+   -3.220904,
+   'Look down over the edge of the breakwater, can you see the different coloured zones on the rock? Green, brown (algae), orange and grey (lichen), perhaps some barnacles. This zonation reflects the differing environmental conditions at different heights above sea level.' 
+)
+
+createMarker2 (
+   'icons/staryellow.png',
+   55.987082, 
+   -3.215595,
+   'Mutual aid - working together for survival - is clear in the symbiotic relationship between fungi and algae in lichen. In the words of anarchist ecologist Peter Kropotkin, "Mutual aid is as much a law of nature as mutual struggle" ' 
+)
+
+createMarker2 (
+   'icons/staryellow.png',
+   55.984277, 
+   -3.220133,
+   'Seagull poo is high in nitrogen, which is toxic to many lichen species - but not one of the species on this site. Use the purple stars to identify which one' 
+)
+
+createMarker2 (
+   'icons/staryellow.png',
+   55.98507, 
+   -3.220174,
+   'Storm Babet threw this hut into the sea. Extreme weather events are becoming increasingly common due to climate change. What climactic variables do the lichen species here depend on?' 
+)
+
+createMarker2 (
+   'icons/staryellow.png',
+   55.981345, 
+   -3.215847,
+   'Look down over the edge of the breakwater, can you see the different coloured zones on the rock? <br> Green, brown (algae), orange and grey (lichen), perhaps some barnacles. This zonation reflects the differing environmental conditions at different heights above sea level.' 
+)
+
+createMarker2 (
+   'icons/staryellow.png',
+   55.980636, 
+   -3.218421,
+   'What is a lichen? A lichen is a symbiotic assemblage between two or more organisms, composed of a fungal structure and an algal and/or cyanobacterial photosynthesiser' 
+)
+
+createMarker2 (
+   'icons/staryellow.png',
+   55.986794, 
+   -3.220019,
+   'Pedestrian action affects the distribution of lichen on this site. Which species is least tolerant?' 
+)
+
+createMarker2 (
+   'icons/staryellow.png',
+   55.985003, 
+   -3.215416,
+   'The eastern side of the breakwater is exposed to higher waves and wind. This exposure changes the zonation and distribution of lichen on the top and sides.' 
+)
+
+
+
+// var overlayMaps = {
+//    "Handrawn": imageOverlay
+// };
+// var layerControl = L.control.layers(overlayMaps).addTo(map);
+
+
+//map.setMaxBounds(map.getBounds(), {
+  // padding:[100,100]
+//});
+
+//var mapBounds = L.latlngBounds([
+//[55.988180, -3.225095], [55.980714, -3.214023]
+//]);
+//map.fitBounds(mapBounds);
+
+
+
+      </script>
+      <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+      <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+   </body>
+   
+</html>
